@@ -9,6 +9,9 @@ environment:
   sdk: '>=2.17.0 <4.0.0'
   flutter: ">=1.17.0"
 
+topics:
+  - widget
+
 dependencies:
   flutter:
     sdk: flutter
