@@ -1,5 +1,5 @@
 import 'package:datetime_loop/datetime_loop.dart';
-import 'package:exemple/page.dart';
+import 'package:example/page.dart';
 import 'package:flutter/material.dart';
 
 void main() {
