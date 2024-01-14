@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:io';
 
 import 'package:datetime_loop/src/utils/time_unit.dart';
 import 'package:flutter/material.dart';
@@ -17,29 +16,13 @@ mixin DateTimeProvider on State<DateTimeLoopBuilder> {
   void initState() {
     super.initState();
     dateTimeController = StreamController<DateTime>();
-    if (Platform.environment.containsKey('FLUTTER_TEST')) {
-      _initDateTimeStreamForTest();
-    }
-    else {
-      _initDateTimeStream();
-    }
-
-
+    _initDateTimeStream();
   }
 
   @override
   void dispose() {
     dateTimeController.close();
     super.dispose();
-  }
-
-  @protected
-  void _initDateTimeStreamForTest() async {
-    await Future<bool>.delayed(_getDuration2wait(widget.timeUnit), () => true);
-      if (!dateTimeController.isClosed) {
-        dateTime2show = DateTime.now();
-        dateTimeController.add(DateTime.now());
-      }
   }
 
 
