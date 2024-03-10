@@ -11,6 +11,8 @@ environment:
 
 topics:
   - widget
+  - datetime
+  - timer
 
 dependencies:
   flutter:
