@@ -7,16 +7,20 @@ import 'datetime_loop_builder.dart';
 
 @protected
 mixin DateTimeProvider on State<DateTimeLoopBuilder> {
-
-  DateTime dateTime2show = DateTime.now();
-
   StreamController<DateTime> dateTimeController = StreamController<DateTime>();
+
+  late UniqueKey _uniqueKey;
 
   @override
   void initState() {
     super.initState();
-    dateTimeController = StreamController<DateTime>();
-    _initDateTimeStream();
+    _processDateTimeStream();
+  }
+
+  @override
+  void didUpdateWidget(covariant DateTimeLoopBuilder oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    _processDateTimeStream();
   }
 
   @override
@@ -25,27 +29,40 @@ mixin DateTimeProvider on State<DateTimeLoopBuilder> {
     super.dispose();
   }
 
-
-  void _initDateTimeStream() async {
-    while (await Future<bool>.delayed(_getDuration2wait(widget.timeUnit), () => true)) {
+  void _processDateTimeStream() async {
+    var dateTime = DateTime.now();
+    if (widget.triggerOnStateChange) {
+      dateTimeController.add(dateTime);
+    }
+    _uniqueKey = UniqueKey();
+    final saveCurrentUniqueKey = _uniqueKey;
+    while (await Future<bool>.delayed(
+        _getDuration2wait(widget.timeUnit, dateTime),
+        () => _uniqueKey == saveCurrentUniqueKey)) {
       if (dateTimeController.isClosed) {
         break;
       }
-      dateTime2show = DateTime.now();
-      dateTimeController.add(DateTime.now());
+      final timeNow = DateTime.now();
+      dateTimeController.add(timeNow);
+      dateTime = timeNow;
     }
   }
 
-  Duration _getDuration2wait (TimeUnit timeUnit) {
+  Duration _getDuration2wait(TimeUnit timeUnit, DateTime dateTime) {
     switch (timeUnit) {
       case TimeUnit.seconds:
-        return Duration(microseconds: 999 - dateTime2show.microsecond, milliseconds: 999 - dateTime2show.millisecond);
+        return Duration(
+            microseconds: 999 - dateTime.microsecond,
+            milliseconds: 999 - dateTime.millisecond);
       case TimeUnit.minutes:
-        return _getDuration2wait(TimeUnit.seconds) + Duration(seconds: 59 - dateTime2show.second);
+        return _getDuration2wait(TimeUnit.seconds, dateTime) +
+            Duration(seconds: 59 - dateTime.second);
       case TimeUnit.hours:
-        return _getDuration2wait(TimeUnit.minutes) + Duration(minutes: 59 - dateTime2show.minute);
+        return _getDuration2wait(TimeUnit.minutes, dateTime) +
+            Duration(minutes: 59 - dateTime.minute);
       case TimeUnit.days:
-        return _getDuration2wait(TimeUnit.hours) + Duration(hours: 23 - dateTime2show.hour);
+        return _getDuration2wait(TimeUnit.hours, dateTime) +
+            Duration(hours: 23 - dateTime.hour);
     }
   }
 }

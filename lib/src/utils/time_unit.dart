@@ -1,6 +1,1 @@
-enum TimeUnit {
-  seconds,
-  minutes,
-  hours,
-  days
-}
+enum TimeUnit { seconds, minutes, hours, days }
