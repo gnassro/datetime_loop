@@ -2,21 +2,6 @@
 
 A Flutter package that provides a widget to listen to the system's datetime and trigger a rebuild based on the specified time unit.
 
-## Installation
-
-Add the following to your `pubspec.yaml` file:
-
-```yaml
-dependencies:
-  datetime_loop: ^1.0.0
-```
-
-Then run:
-
-```bash
-flutter pub get
-```
-
 ## Usage
 
 Import the package in your Dart code:
