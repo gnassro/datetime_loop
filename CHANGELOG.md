@@ -1,3 +1,8 @@
+## 1.2.0 (2024-04-02)
+
+* **New Feature:** Added `milliseconds` to `TimeUnit`.
+* update example
+
 ## 1.1.1 (2024-04-02)
 
 * add example pubspec.lock to gitignore
