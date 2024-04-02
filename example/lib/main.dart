@@ -16,7 +16,7 @@ class MyApp extends StatefulWidget {
 
 class _MyAppState extends State<MyApp> {
   final GroupButtonController _controller =
-      GroupButtonController(selectedIndex: 0);
+      GroupButtonController(selectedIndex: 1);
 
   final ValueNotifier<TimeUnit> _timeUnitNotifier =
       ValueNotifier(TimeUnit.seconds);
