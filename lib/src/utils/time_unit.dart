@@ -1,1 +1,1 @@
-enum TimeUnit { seconds, minutes, hours, days }
+enum TimeUnit { milliseconds, seconds, minutes, hours, days }
