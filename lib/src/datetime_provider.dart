@@ -52,7 +52,6 @@ mixin DateTimeProvider on State<DateTimeLoopBuilder> {
     switch (timeUnit) {
       case TimeUnit.seconds:
         return Duration(
-            microseconds: 999 - dateTime.microsecond,
             milliseconds: 999 - dateTime.millisecond);
       case TimeUnit.minutes:
         return _getDuration2wait(TimeUnit.seconds, dateTime) +
