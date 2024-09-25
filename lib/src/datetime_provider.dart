@@ -53,8 +53,7 @@ mixin DateTimeProvider on State<DateTimeLoopBuilder> {
       case TimeUnit.milliseconds:
         return const Duration(milliseconds: 1);
       case TimeUnit.seconds:
-        return Duration(
-            milliseconds: 999 - dateTime.millisecond);
+        return Duration(milliseconds: 999 - dateTime.millisecond);
       case TimeUnit.minutes:
         return _getDuration2wait(TimeUnit.seconds, dateTime) +
             Duration(seconds: 59 - dateTime.second);
