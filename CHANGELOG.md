@@ -1,3 +1,12 @@
+## [1.2.1] - (2024-11-09)
+### Added
+- Example: `clock_example.dart`.
+
+### Changed
+- Updated `README`.
+- Code formatting to ensure compliance with `pub.dev` standards.
+- Minor update to the example usage.
+
 ## 1.2.0 (2024-04-02)
 
 * **New Feature:** Added `milliseconds` to `TimeUnit`.
