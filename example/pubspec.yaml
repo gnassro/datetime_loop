@@ -36,6 +36,8 @@ dependencies:
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.2
   group_button: ^5.3.4
+  syncfusion_flutter_gauges: ^27.1.58
+  intl: ^0.19.0
   datetime_loop:
     path: ../
 
