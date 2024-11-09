@@ -8,7 +8,6 @@ void main() {
 }
 
 class ClockExample extends StatefulWidget {
-
   const ClockExample({super.key});
 
   @override
@@ -16,7 +15,6 @@ class ClockExample extends StatefulWidget {
 }
 
 class _ClockExampleState extends State<ClockExample> {
-
   final Color _needleColor = const Color(0xFF355C7D);
 
   @override
@@ -47,12 +45,15 @@ class _ClockExampleState extends State<ClockExample> {
                           minorTicksPerInterval: 4,
                           tickOffset: 0.03,
                           minorTickStyle: const MinorTickStyle(
-                              length: 0.06, lengthUnit: GaugeSizeUnit.factor, thickness: 1),
+                              length: 0.06,
+                              lengthUnit: GaugeSizeUnit.factor,
+                              thickness: 1),
                           majorTickStyle: const MajorTickStyle(
                               length: 0.1, lengthUnit: GaugeSizeUnit.factor),
                           axisLabelStyle: const GaugeTextStyle(fontSize: 12),
                           axisLineStyle: const AxisLineStyle(
-                              thickness: 0.01, thicknessUnit: GaugeSizeUnit.factor),
+                              thickness: 0.01,
+                              thicknessUnit: GaugeSizeUnit.factor),
                           pointers: <GaugePointer>[
                             NeedlePointer(
                                 needleEndWidth: 2,
@@ -77,32 +78,30 @@ class _ClockExampleState extends State<ClockExample> {
                                 value: (seconds / 5),
                                 needleColor: const Color(0xFF00A8B5),
                                 tailStyle: const TailStyle(
-                                    width: 0.8, length: 0.2, color: Color(0xFF00A8B5)),
-                                knobStyle:
-                                const KnobStyle(knobRadius: 0.03, color: Colors.white)),
+                                    width: 0.8,
+                                    length: 0.2,
+                                    color: Color(0xFF00A8B5)),
+                                knobStyle: const KnobStyle(
+                                    knobRadius: 0.03, color: Colors.white)),
                           ]),
                     ],
                   ),
-                  const SizedBox(width: 12,),
+                  const SizedBox(
+                    width: 12,
+                  ),
                   Container(
-                    decoration: const BoxDecoration(
-                      color: Colors.blueGrey
-                    ),
-                    padding: const EdgeInsetsDirectional.symmetric(vertical: 8, horizontal: 12),
+                    decoration: const BoxDecoration(color: Colors.blueGrey),
+                    padding: const EdgeInsetsDirectional.symmetric(
+                        vertical: 8, horizontal: 12),
                     child: Text(
-                        DateFormat('HH:mm:ss').format(dateTime),
-                      style: const TextStyle(
-                        fontSize: 38
-
-                      ),
+                      DateFormat('HH:mm:ss').format(dateTime),
+                      style: const TextStyle(fontSize: 38),
                     ),
                   )
                 ],
               );
-            }
-        ),
+            }),
       ),
     );
   }
-
 }
