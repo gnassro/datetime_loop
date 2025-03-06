@@ -6,7 +6,7 @@
   <a href="https://github.com/gnassro/datetime_loop/blob/master/LICENSE"><img src="https://img.shields.io/github/license/gnassro/datetime_loop" alt="BSD 3-Clause License"></a>
   <a href="https://github.com/gnassro/datetime_loop"><img src="https://img.shields.io/github/stars/gnassro/datetime_loop?style=social" alt="Pub"></a><br>
   <a href="https://pub.dev/packages/datetime_loop/score"><img src="https://img.shields.io/pub/likes/datetime_loop?logo=flutter" alt="Pub likes"></a>
-  <a href="https://pub.dev/packages/datetime_loop/score"><img src="https://img.shields.io/pub/popularity/datetime_loop?logo=flutter" alt="Pub popularity"></a>
+  <a href="https://pub.dev/packages/datetime_loop/score"><img src="https://img.shields.io/pub/dm/datetime_loop?logo=flutter" alt="Download"></a>
   <a href="https://pub.dev/packages/datetime_loop/score"><img src="https://img.shields.io/pub/points/datetime_loop?logo=flutter" alt="Pub points"></a>
 </p>
 
@@ -25,7 +25,9 @@ Import the package in your Dart code:
 import 'package:datetime_loop/datetime_loop.dart';
 ```
 
-Use the **DateTimeLoopBuilder** widget in your Flutter app:
+### Using `DateTimeLoopBuilder`
+
+Use the `DateTimeLoopBuilder` widget in your Flutter app to rebuild UI elements based on system time updates:
 
 ```dart
 DateTimeLoopBuilder(
@@ -43,6 +45,20 @@ DateTimeLoopBuilder(
     );
   }
 )
+```
+
+### Using `DateTimeLoopController`
+
+New in version `1.3.0`! Use the `DateTimeLoopController` to listen to datetime updates programmatically via a stream:
+
+```dart
+final controller = DateTimeLoopController(timeUnit: TimeUnit.minutes);
+controller.dateTimeStream.listen((dateTime) {
+print('Current time: $dateTime');
+});
+
+// Don’t forget to dispose of the controller when done
+controller.dispose();
 ```
 
 You can check more examples of using this widget [here](https://github.com/gnassro/datetime_loop/tree/master/example/lib)

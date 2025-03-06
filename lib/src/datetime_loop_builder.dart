@@ -1,4 +1,4 @@
-import 'package:datetime_loop/src/datetime_provider.dart';
+import 'package:datetime_loop/src/date_time_loop_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:datetime_loop/src/utils/time_unit.dart';
 
@@ -35,31 +35,51 @@ class DateTimeLoopBuilder extends StatefulWidget {
   State<DateTimeLoopBuilder> createState() => _DateTimeLoopBuilderState();
 }
 
-class _DateTimeLoopBuilderState extends State<DateTimeLoopBuilder>
-    with DateTimeProvider {
+class _DateTimeLoopBuilderState extends State<DateTimeLoopBuilder> {
   final initialDateTime = DateTime.now();
 
-  final GlobalKey<_DateTimeLoopBuilderState> _streamKey =
-      GlobalKey<_DateTimeLoopBuilderState>();
+  late DateTimeLoopController _controller;
 
   Widget? _lastPushedWidget;
 
   DateTime? _lastPushedDateTime;
 
   @override
+  void initState() {
+    super.initState();
+    _controller = DateTimeLoopController(
+      timeUnit: widget.timeUnit,
+      triggerOnStart: widget.triggerOnStateChange,
+    );
+  }
+
+  @override
+  void didUpdateWidget(covariant DateTimeLoopBuilder oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (oldWidget.timeUnit != widget.timeUnit ||
+        oldWidget.triggerOnStateChange != widget.triggerOnStateChange) {
+      _controller.dispose();
+      _controller = DateTimeLoopController(
+        timeUnit: widget.timeUnit,
+        triggerOnStart: widget.triggerOnStateChange,
+      );
+    }
+  }
+
+  @override
   Widget build(BuildContext context) {
     return StreamBuilder<DateTime>(
-        key: _streamKey,
-        initialData: initialDateTime,
-        stream: dateTimeController.stream,
-        builder: (context, datetimeSnapshot) {
-          final DateTime dateTime = datetimeSnapshot.data!;
-          if (_lastPushedWidget == null || dateTime != _lastPushedDateTime) {
-            _lastPushedDateTime = dateTime;
-            _lastPushedWidget =
-                widget.builder(context, _lastPushedDateTime!, widget.child);
-          }
-          return _lastPushedWidget!;
-        });
+      initialData: initialDateTime,
+      stream: _controller.dateTimeStream,
+      builder: (context, datetimeSnapshot) {
+        final DateTime dateTime = datetimeSnapshot.data!;
+        if (_lastPushedWidget == null || dateTime != _lastPushedDateTime) {
+          _lastPushedDateTime = dateTime;
+          _lastPushedWidget =
+              widget.builder(context, _lastPushedDateTime!, widget.child);
+        }
+        return _lastPushedWidget!;
+      },
+    );
   }
 }
