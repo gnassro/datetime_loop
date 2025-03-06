@@ -1,3 +1,11 @@
+## [1.3.0] - (2025-03-06)
+### Added
+- `DateTimeLoopController` for stream-based datetime updates.
+
+### Changed
+- Replaced internal `DateTimeLoopProvider` with `DateTimeLoopController`.
+- updated examples.
+
 ## [1.2.1] - (2024-11-09)
 ### Added
 - Example: `clock_example.dart`.
