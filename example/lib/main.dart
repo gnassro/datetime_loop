@@ -21,36 +21,85 @@ class _MyAppState extends State<MyApp> {
   final ValueNotifier<TimeUnit> _timeUnitNotifier =
       ValueNotifier(TimeUnit.seconds);
 
+  late DateTimeLoopController _dateTimeController;
+
+  @override
+  void initState() {
+    super.initState();
+    _dateTimeController = DateTimeLoopController(
+      timeUnit: TimeUnit.seconds,
+      triggerOnStart: true,
+    );
+  }
+
+
+  @override
+  void dispose() {
+    _dateTimeController.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       home: SafeArea(
         child: Scaffold(
-          body: Center(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                GroupButton<TimeUnit>(
-                  controller: _controller,
-                  buttons: TimeUnit.values,
-                  onSelected: (timeUnit, index, isSelected) {
-                    _timeUnitNotifier.value = timeUnit;
-                  },
-                  buttonTextBuilder: (__, timeUnit, context) {
-                    return timeUnit.name;
-                  },
-                ),
-                const SizedBox(
-                  height: 12,
-                ),
-                ValueListenableBuilder<TimeUnit>(
-                    valueListenable: _timeUnitNotifier,
-                    builder: (context, timeUnit, __) {
-                      return ExampleComponent(timeUnit: timeUnit);
-                    })
-              ],
-            ),
+          appBar: AppBar(
+            title: const Text("Example"),
+          ),
+          body: ListView(
+            shrinkWrap: true,
+            children: [
+              GroupButton<TimeUnit>(
+                controller: _controller,
+                buttons: TimeUnit.values,
+                onSelected: (timeUnit, index, isSelected) async {
+                  _timeUnitNotifier.value = timeUnit;
+                  _dateTimeController.dispose();
+                  _dateTimeController = DateTimeLoopController(
+                    timeUnit: timeUnit,
+                    triggerOnStart: true,
+                  );
+                  setState(() {});
+                },
+                buttonTextBuilder: (__, timeUnit, context) {
+                  return timeUnit.name;
+                },
+              ),
+              const SizedBox(
+                height: 12,
+              ),
+              ValueListenableBuilder<TimeUnit>(
+                  valueListenable: _timeUnitNotifier,
+                  builder: (context, timeUnit, __) {
+                    return ExampleComponent(timeUnit: timeUnit);
+                  }),
+              const SizedBox(
+                height: 12,
+              ),
+              StreamBuilder(
+                  stream: _dateTimeController.dateTimeStream,
+                  initialData: DateTime.now(),
+                  builder: (context, snapshot) {
+                    final DateTime dateTime = snapshot.data!;
+                    return Column(
+                      children: [
+                        Container(
+                          width: 200,
+                          height: 200,
+                          color: Color((math.Random().nextDouble() * 0xFFFFFF).toInt())
+                              .withOpacity(1.0),
+                          child: const Center(
+                            child: Text(
+                                'Widget restate based on DateTimeLoopController'),
+                          ),
+                        ),
+                        Text('${dateTime.hour}:${dateTime.minute}:${dateTime.second}'),
+                      ],
+                    );
+                  }
+              )
+            ],
           ),
         ),
       ),
