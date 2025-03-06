@@ -6,7 +6,7 @@
   <a href="https://github.com/gnassro/datetime_loop/blob/master/LICENSE"><img src="https://img.shields.io/github/license/gnassro/datetime_loop" alt="BSD 3-Clause License"></a>
   <a href="https://github.com/gnassro/datetime_loop"><img src="https://img.shields.io/github/stars/gnassro/datetime_loop?style=social" alt="Pub"></a><br>
   <a href="https://pub.dev/packages/datetime_loop/score"><img src="https://img.shields.io/pub/likes/datetime_loop?logo=flutter" alt="Pub likes"></a>
-  <a href="https://pub.dev/packages/datetime_loop/score"><img src="https://img.shields.io/pub/popularity/datetime_loop?logo=flutter" alt="Pub popularity"></a>
+  <a href="https://pub.dev/packages/datetime_loop/score"><img src="https://img.shields.io/pub/dm/datetime_loop?logo=flutter" alt="Download"></a>
   <a href="https://pub.dev/packages/datetime_loop/score"><img src="https://img.shields.io/pub/points/datetime_loop?logo=flutter" alt="Pub points"></a>
 </p>
 
