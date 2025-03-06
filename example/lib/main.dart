@@ -32,7 +32,6 @@ class _MyAppState extends State<MyApp> {
     );
   }
 
-
   @override
   void dispose() {
     _dateTimeController.dispose();
@@ -87,18 +86,19 @@ class _MyAppState extends State<MyApp> {
                         Container(
                           width: 200,
                           height: 200,
-                          color: Color((math.Random().nextDouble() * 0xFFFFFF).toInt())
+                          color: Color((math.Random().nextDouble() * 0xFFFFFF)
+                                  .toInt())
                               .withOpacity(1.0),
                           child: const Center(
                             child: Text(
                                 'Widget restate based on DateTimeLoopController'),
                           ),
                         ),
-                        Text('${dateTime.hour}:${dateTime.minute}:${dateTime.second}'),
+                        Text(
+                            '${dateTime.hour}:${dateTime.minute}:${dateTime.second}'),
                       ],
                     );
-                  }
-              )
+                  })
             ],
           ),
         ),

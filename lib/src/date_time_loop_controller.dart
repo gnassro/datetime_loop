@@ -77,9 +77,8 @@ class DateTimeLoopController {
     }
     _uniqueKey = UniqueKey();
     final saveCurrentUniqueKey = _uniqueKey;
-    while (await Future<bool>.delayed(
-        _getDuration2wait(timeUnit, dateTime),
-            () => _uniqueKey == saveCurrentUniqueKey)) {
+    while (await Future<bool>.delayed(_getDuration2wait(timeUnit, dateTime),
+        () => _uniqueKey == saveCurrentUniqueKey)) {
       if (_streamController.isClosed) {
         break;
       }
