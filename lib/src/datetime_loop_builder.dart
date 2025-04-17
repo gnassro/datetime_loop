@@ -64,6 +64,14 @@ class _DateTimeLoopBuilderState extends State<DateTimeLoopBuilder> {
         triggerOnStart: widget.triggerOnStateChange,
       );
     }
+
+    /// Workaround for Flutter issue #64916 (https://github.com/flutter/flutter/issues/64916).
+    /// Triggers an immediate rebuild when `triggerOnStateChange` is true to ensure the builder
+    /// is called on widget initialization and parent rebuilds, addressing a limitation where
+    /// `StreamBuilder` may not reflect state changes promptly.
+    if (widget.triggerOnStateChange) {
+      _controller.triggerNow();
+    }
   }
 
   @override
