@@ -54,7 +54,7 @@ New in version `1.3.0`! Use the `DateTimeLoopController` to listen to datetime u
 ```dart
 final controller = DateTimeLoopController(timeUnit: TimeUnit.minutes);
 controller.dateTimeStream.listen((dateTime) {
-print('Current time: $dateTime');
+  print('Current time: $dateTime');
 });
 
 // Don’t forget to dispose of the controller when done
