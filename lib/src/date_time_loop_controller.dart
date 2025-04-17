@@ -62,6 +62,13 @@ class DateTimeLoopController {
     _processDateTimeStream();
   }
 
+  /// Emits the current [DateTime] immediately to the stream.
+  void triggerNow() {
+    if (!_streamController.isClosed) {
+      _streamController.add(DateTime.now());
+    }
+  }
+
   /// Starts the process of emitting [DateTime] updates based on the [timeUnit].
   ///
   /// This method runs an asynchronous loop that:
