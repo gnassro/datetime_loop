@@ -1,3 +1,8 @@
+## [1.3.1] - (2025-04-17)
+- Fixed `triggerOnStateChange` in `DateTimeLoopBuilder` to trigger immediate builds on init and parent rebuilds (Flutter issue #64916).
+- Updated example app’s Android code for Flutter > 3.27 compatibility.
+- Updated `README`.
+
 ## [1.3.0] - (2025-03-06)
 ### Added
 - `DateTimeLoopController` for stream-based datetime updates.
