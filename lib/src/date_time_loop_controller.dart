@@ -1,7 +1,6 @@
 import 'dart:async';
 
 import 'package:datetime_loop/src/utils/time_unit.dart';
-import 'package:datetime_loop/src/utils/unique_key.dart';
 
 /// A controller that emits [DateTime] updates at intervals specified by a [TimeUnit].
 ///
@@ -42,9 +41,10 @@ class DateTimeLoopController {
   /// If `false`, the first emission occurs at the next interval boundary. Defaults to `true`.
   final bool triggerOnStart;
 
-  /// A unique key used to control the emission loop.
-  /// This key ensures the loop stops when the controller is disposed or the stream is cancelled.
-  late UniqueKey _uniqueKey;
+  /// The internal timer that drives the datetime loop.
+  /// This timer is responsible for scheduling and executing the periodic updates.
+  /// It is canceled and recreated when the controller is disposed or the time unit changes.
+  Timer? _timer;
 
   /// The broadcast stream that emits [DateTime] updates at intervals specified by [timeUnit].
   /// Multiple listeners can subscribe to this stream.
@@ -59,7 +59,19 @@ class DateTimeLoopController {
     required this.timeUnit,
     this.triggerOnStart = true,
   }) : _streamController = StreamController<DateTime>.broadcast() {
-    _processDateTimeStream();
+    _initialize();
+  }
+
+  void _initialize() {
+    if (triggerOnStart) {
+      // Defer the initial event to allow listeners to subscribe.
+      Future.microtask(() {
+        if (!_streamController.isClosed) {
+          _streamController.add(DateTime.now());
+        }
+      });
+    }
+    _scheduleNextTick();
   }
 
   /// Emits the current [DateTime] immediately to the stream.
@@ -69,30 +81,22 @@ class DateTimeLoopController {
     }
   }
 
-  /// Starts the process of emitting [DateTime] updates based on the [timeUnit].
-  ///
-  /// This method runs an asynchronous loop that:
-  /// 1. Emits the current [DateTime] if [triggerOnStart] is `true`.
-  /// 2. Waits for the duration calculated by [_getDuration2wait].
-  /// 3. Emits the current [DateTime] at each interval.
-  ///
-  /// The loop continues until the stream is closed or the controller is disposed.
-  void _processDateTimeStream() async {
-    var dateTime = DateTime.now();
-    if (triggerOnStart) {
-      _streamController.add(dateTime);
-    }
-    _uniqueKey = UniqueKey();
-    final saveCurrentUniqueKey = _uniqueKey;
-    while (await Future<bool>.delayed(_getDuration2wait(timeUnit, dateTime),
-        () => _uniqueKey == saveCurrentUniqueKey)) {
+  /// Schedules the next tick of the datetime loop.
+  /// This method cancels any existing timer and creates a new one with a duration
+  /// calculated by `_getDuration2wait`. When the timer fires, it emits the
+  /// current `DateTime` and schedules the next tick.
+  void _scheduleNextTick() {
+    _timer?.cancel();
+    final now = DateTime.now();
+    final duration = _getDuration2wait(timeUnit, now);
+
+    _timer = Timer(duration, () {
       if (_streamController.isClosed) {
-        break;
+        return;
       }
-      final timeNow = DateTime.now();
-      _streamController.add(timeNow);
-      dateTime = timeNow;
-    }
+      _streamController.add(DateTime.now());
+      _scheduleNextTick(); // Schedule the next tick
+    });
   }
 
   /// Calculates the duration to wait before emitting the next [DateTime] based on the [timeUnit].
@@ -120,10 +124,8 @@ class DateTimeLoopController {
     }
   }
 
-  /// Closes the stream controller and stops emitting [DateTime] updates.
-  ///
-  /// Call this method when the controller is no longer needed to prevent memory leaks.
-  void dispose() async {
-    await _streamController.close();
+  void dispose() {
+    _timer?.cancel();
+    _streamController.close();
   }
 }
