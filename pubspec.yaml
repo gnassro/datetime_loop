@@ -1,6 +1,6 @@
 name: datetime_loop
 description: "A Flutter package that provides a widget to listen to the system's datetime and trigger a rebuild based on the specified time unit."
-version: 1.4.0
+version: 1.5.0
 repository: https://github.com/gnassro/datetime_loop
 issue_tracker: https://github.com/gnassro/datetime_loop/issues
 homepage: https://github.com/gnassro/datetime_loop

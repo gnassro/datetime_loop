@@ -27,7 +27,7 @@ import 'package:datetime_loop/datetime_loop.dart';
 
 ### Using `DateTimeLoopBuilder`
 
-Use the `DateTimeLoopBuilder` widget in your Flutter app to rebuild UI elements based on system time updates:
+Use the `DateTimeLoopBuilder` widget to rebuild UI elements based on system time updates. You can provide a `timeUnit` for simple setups or a custom `DateTimeLoopController` for advanced control (e.g., pause/resume):
 
 ```dart
 DateTimeLoopBuilder(
@@ -49,7 +49,7 @@ DateTimeLoopBuilder(
 
 ### Using `DateTimeLoopController`
 
-New in version `1.3.0`! Use the `DateTimeLoopController` to listen to datetime updates programmatically via a stream:
+The `DateTimeLoopController` provides a stream of datetime updates and supports advanced features like pausing and resuming updates, useful for optimizing resource usage (e.g., when the app is backgrounded):
 
 ```dart
 final controller = DateTimeLoopController(timeUnit: TimeUnit.minutes);
@@ -57,7 +57,21 @@ controller.dateTimeStream.listen((dateTime) {
   print('Current time: $dateTime');
 });
 
-// Don’t forget to dispose of the controller when done
+// Pause updates to save resources
+controller.pause();
+
+// Resume updates with an immediate trigger
+controller.resume(triggerImmediate: true);
+
+// Use the controller with DateTimeLoopBuilder
+DateTimeLoopBuilder(
+  controller: controller,
+  builder: (context, dateTime, child) {
+  return Text('Time: ${dateTime.toString().split('.').first}');
+  },
+);
+
+// Dispose of the controller when done
 controller.dispose();
 ```
 

@@ -1,3 +1,10 @@
+## [1.5.0] - (2025-10-24)
+- Added `pause()` and `resume()` methods to `DateTimeLoopController` for pausing and resuming datetime updates, 
+  useful for resource management (e.g., when the app is backgrounded).
+- Added optional `controller` parameter to `DateTimeLoopBuilder` to allow external controller management, enabling advanced features like pause/resume.
+- Added example demonstrating pause/resume functionality in `example/lib/pause_resume_example.dart`.
+- Updated `README.md`.
+
 ## [1.4.0] - (2025-10-24)
 - Refactored `DateTimeLoopController` to use `Timer` for periodic updates instead of a `while` loop with `Future.delayed`, improving reliability and resource management.
 - Moved initial `DateTime` emission (when `triggerOnStart` is `true`) to `Future.microtask` to allow listeners to subscribe first.
