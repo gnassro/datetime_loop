@@ -6,8 +6,14 @@ typedef DateTimeLoopWidgetBuilder = Widget Function(
     BuildContext context, DateTime value, Widget? child);
 
 class DateTimeLoopBuilder extends StatefulWidget {
-  /// The time unit for updates (required).
-  final TimeUnit timeUnit;
+  /// The time unit for updates. Required if [controller] is not provided.
+  final TimeUnit? timeUnit;
+
+  /// An optional custom controller to use for datetime updates. If provided,
+  /// [timeUnit] and [triggerOnStateChange] (for creation) are ignored, but
+  /// [triggerOnStateChange] still controls immediate triggers on widget state changes.
+  /// This allows users to manage the controller externally, e.g., for pause/resume functionality.
+  final DateTimeLoopController? controller;
 
   /// A function to build the widget based on the current datetime (required).
   final DateTimeLoopWidgetBuilder builder;
@@ -24,12 +30,15 @@ class DateTimeLoopBuilder extends StatefulWidget {
   /// [DateTimeLoopBuilder] is a Widget that listens to the system's datetime and triggers
   /// a rebuild of its child widget based on the specified time unit.
   /// This allows you to create dynamic UI elements that update at regular intervals.
-  const DateTimeLoopBuilder(
-      {super.key,
-      required this.timeUnit,
-      this.triggerOnStateChange = true,
-      required this.builder,
-      this.child});
+  const DateTimeLoopBuilder({
+    super.key,
+    this.timeUnit,
+    this.controller,
+    this.triggerOnStateChange = true,
+    required this.builder,
+    this.child,
+  }) : assert(controller != null || timeUnit != null,
+            'Either controller or timeUnit must be provided.');
 
   @override
   State<DateTimeLoopBuilder> createState() => _DateTimeLoopBuilderState();
@@ -40,6 +49,8 @@ class _DateTimeLoopBuilderState extends State<DateTimeLoopBuilder> {
 
   late DateTimeLoopController _controller;
 
+  late bool _ownsController;
+
   Widget? _lastPushedWidget;
 
   DateTime? _lastPushedDateTime;
@@ -47,31 +58,39 @@ class _DateTimeLoopBuilderState extends State<DateTimeLoopBuilder> {
   @override
   void initState() {
     super.initState();
-    _controller = DateTimeLoopController(
-      timeUnit: widget.timeUnit,
-      triggerOnStart: widget.triggerOnStateChange,
-    );
+    _updateController();
+  }
+
+  void _updateController() {
+    _controller = widget.controller ??
+        DateTimeLoopController(
+          timeUnit: widget.timeUnit!,
+          triggerOnStart: widget.triggerOnStateChange,
+        );
+    _ownsController = widget.controller == null;
   }
 
   @override
   void dispose() {
-    _controller.dispose();
+    if (_ownsController) {
+      _controller.dispose();
+    }
     super.dispose();
   }
 
   @override
   void didUpdateWidget(covariant DateTimeLoopBuilder oldWidget) {
     super.didUpdateWidget(oldWidget);
-    if (oldWidget.timeUnit != widget.timeUnit ||
+    if (oldWidget.controller != widget.controller ||
+        oldWidget.timeUnit != widget.timeUnit ||
         oldWidget.triggerOnStateChange != widget.triggerOnStateChange) {
-      _controller.dispose();
-      _controller = DateTimeLoopController(
-        timeUnit: widget.timeUnit,
-        triggerOnStart: widget.triggerOnStateChange,
-      );
+      if (_ownsController) {
+        _controller.dispose();
+      }
+      _updateController();
     }
 
-    /// Workaround for Flutter issue #64916 (https://github.com/flutter/flutter/issues/64916).
+    /// Workaround for Flutter issue #64916[](https://github.com/flutter/flutter/issues/64916).
     /// Triggers an immediate rebuild when `triggerOnStateChange` is true to ensure the builder
     /// is called on widget initialization and parent rebuilds, addressing a limitation where
     /// `StreamBuilder` may not reflect state changes promptly.
