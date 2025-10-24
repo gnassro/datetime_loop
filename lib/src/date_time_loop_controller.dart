@@ -126,6 +126,8 @@ class DateTimeLoopController {
 
   void dispose() {
     _timer?.cancel();
-    _streamController.close();
+    if (!_streamController.isClosed) {
+      _streamController.close();
+    }
   }
 }
