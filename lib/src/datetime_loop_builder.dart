@@ -54,6 +54,12 @@ class _DateTimeLoopBuilderState extends State<DateTimeLoopBuilder> {
   }
 
   @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
+  @override
   void didUpdateWidget(covariant DateTimeLoopBuilder oldWidget) {
     super.didUpdateWidget(oldWidget);
     if (oldWidget.timeUnit != widget.timeUnit ||
