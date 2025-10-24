@@ -14,6 +14,7 @@ import 'package:datetime_loop/src/utils/time_unit.dart';
 /// - Uses a broadcast stream to support multiple listeners.
 /// - Automatically starts emitting updates when the first listener subscribes and
 ///   stops when the last listener unsubscribes.
+/// - Supports manual pausing and resuming of updates for resource management (e.g., when the app is backgrounded).
 ///
 /// **Example Usage:**
 /// ```dart
@@ -21,6 +22,10 @@ import 'package:datetime_loop/src/utils/time_unit.dart';
 /// controller.dateTimeStream.listen((dateTime) {
 ///   print('Current time: $dateTime');
 /// });
+/// // Pause updates
+/// controller.pause();
+/// // Resume updates with an immediate trigger
+/// controller.resume(triggerImmediate: true);
 /// // Dispose of the controller when no longer needed
 /// controller.dispose();
 /// ```
@@ -45,6 +50,9 @@ class DateTimeLoopController {
   /// This timer is responsible for scheduling and executing the periodic updates.
   /// It is canceled and recreated when the controller is disposed or the time unit changes.
   Timer? _timer;
+
+  /// Whether the controller is manually paused.
+  bool _isPaused = false;
 
   /// The broadcast stream that emits [DateTime] updates at intervals specified by [timeUnit].
   /// Multiple listeners can subscribe to this stream.
@@ -91,7 +99,7 @@ class DateTimeLoopController {
     final duration = _getDuration2wait(timeUnit, now);
 
     _timer = Timer(duration, () {
-      if (_streamController.isClosed) {
+      if (_streamController.isClosed || _isPaused) {
         return;
       }
       _streamController.add(DateTime.now());
@@ -124,6 +132,32 @@ class DateTimeLoopController {
     }
   }
 
+  /// Pauses the emission of [DateTime] updates, canceling the internal timer.
+  /// This is useful for saving resources when updates are not needed, such as when the app is backgrounded.
+  void pause() {
+    _isPaused = true;
+    _timer?.cancel();
+  }
+
+  /// Resumes the emission of [DateTime] updates if there are active listeners.
+  /// Optionally triggers an immediate update.
+  ///
+  /// **Parameters:**
+  /// - [triggerImmediate]: Whether to emit the current [DateTime] immediately upon resuming. Defaults to `true`.
+  void resume({bool triggerImmediate = true}) {
+    if (!_isPaused || _streamController.isClosed) return;
+    _isPaused = false;
+    if (_streamController.hasListener) {
+      if (triggerImmediate) {
+        triggerNow();
+      }
+      _scheduleNextTick();
+    }
+  }
+
+  /// Closes the stream controller, cancels the timer, and stops emitting [DateTime] updates.
+  ///
+  /// Call this method when the controller is no longer needed to prevent memory leaks.
   void dispose() {
     _timer?.cancel();
     if (!_streamController.isClosed) {
