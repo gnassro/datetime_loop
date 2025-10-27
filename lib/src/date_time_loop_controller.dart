@@ -46,6 +46,10 @@ class DateTimeLoopController {
   /// If `false`, the first emission occurs at the next interval boundary. Defaults to `true`.
   final bool triggerOnStart;
 
+  /// A function that returns the current [DateTime]. Defaults to [DateTime.now].
+  /// This can be overridden for testing or simulation purposes to mock the system time.
+  final DateTime Function() getNow;
+
   /// The internal timer that drives the datetime loop.
   /// This timer is responsible for scheduling and executing the periodic updates.
   /// It is canceled and recreated when the controller is disposed or the time unit changes.
@@ -63,9 +67,11 @@ class DateTimeLoopController {
   /// **Parameters:**
   /// - [timeUnit]: The interval at which [DateTime] updates are emitted.
   /// - [triggerOnStart]: Whether to emit an initial [DateTime] when the first listener subscribes.
+  /// - [getNow]: Optional function to provide the current [DateTime]. Defaults to [DateTime.now]. Useful for testing.
   DateTimeLoopController({
     required this.timeUnit,
     this.triggerOnStart = true,
+    this.getNow = DateTime.now,
   }) : _streamController = StreamController<DateTime>.broadcast() {
     _initialize();
   }
@@ -75,7 +81,7 @@ class DateTimeLoopController {
       // Defer the initial event to allow listeners to subscribe.
       Future.microtask(() {
         if (!_streamController.isClosed) {
-          _streamController.add(DateTime.now());
+          _streamController.add(getNow());
         }
       });
     }
@@ -85,7 +91,7 @@ class DateTimeLoopController {
   /// Emits the current [DateTime] immediately to the stream.
   void triggerNow() {
     if (!_streamController.isClosed) {
-      _streamController.add(DateTime.now());
+      _streamController.add(getNow());
     }
   }
 
@@ -95,14 +101,14 @@ class DateTimeLoopController {
   /// current `DateTime` and schedules the next tick.
   void _scheduleNextTick() {
     _timer?.cancel();
-    final now = DateTime.now();
+    final now = getNow();
     final duration = _getDuration2wait(timeUnit, now);
 
     _timer = Timer(duration, () {
       if (_streamController.isClosed || _isPaused) {
         return;
       }
-      _streamController.add(DateTime.now());
+      _streamController.add(getNow());
       _scheduleNextTick(); // Schedule the next tick
     });
   }

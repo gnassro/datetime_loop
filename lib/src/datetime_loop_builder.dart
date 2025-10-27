@@ -15,6 +15,11 @@ class DateTimeLoopBuilder extends StatefulWidget {
   /// This allows users to manage the controller externally, e.g., for pause/resume functionality.
   final DateTimeLoopController? controller;
 
+  /// A function to provide the current [DateTime]. Defaults to [DateTime.now].
+  /// This can be overridden for testing or simulation purposes to mock the system time.
+  /// If provided, it is used for the initial data and passed to the internal controller if created.
+  final DateTime Function()? getNow;
+
   /// A function to build the widget based on the current datetime (required).
   final DateTimeLoopWidgetBuilder builder;
 
@@ -34,6 +39,7 @@ class DateTimeLoopBuilder extends StatefulWidget {
     super.key,
     this.timeUnit,
     this.controller,
+    this.getNow,
     this.triggerOnStateChange = true,
     required this.builder,
     this.child,
@@ -45,7 +51,7 @@ class DateTimeLoopBuilder extends StatefulWidget {
 }
 
 class _DateTimeLoopBuilderState extends State<DateTimeLoopBuilder> {
-  final initialDateTime = DateTime.now();
+  late final DateTime initialDateTime;
 
   late DateTimeLoopController _controller;
 
@@ -58,6 +64,7 @@ class _DateTimeLoopBuilderState extends State<DateTimeLoopBuilder> {
   @override
   void initState() {
     super.initState();
+    initialDateTime = widget.getNow?.call() ?? DateTime.now();
     _updateController();
   }
 
@@ -66,6 +73,7 @@ class _DateTimeLoopBuilderState extends State<DateTimeLoopBuilder> {
         DateTimeLoopController(
           timeUnit: widget.timeUnit!,
           triggerOnStart: widget.triggerOnStateChange,
+          getNow: widget.getNow ?? DateTime.now,
         );
     _ownsController = widget.controller == null;
   }
@@ -83,7 +91,8 @@ class _DateTimeLoopBuilderState extends State<DateTimeLoopBuilder> {
     super.didUpdateWidget(oldWidget);
     if (oldWidget.controller != widget.controller ||
         oldWidget.timeUnit != widget.timeUnit ||
-        oldWidget.triggerOnStateChange != widget.triggerOnStateChange) {
+        oldWidget.triggerOnStateChange != widget.triggerOnStateChange ||
+        oldWidget.getNow != widget.getNow) {
       if (_ownsController) {
         _controller.dispose();
       }
