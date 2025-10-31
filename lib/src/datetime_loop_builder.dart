@@ -57,10 +57,6 @@ class _DateTimeLoopBuilderState extends State<DateTimeLoopBuilder> {
 
   late bool _ownsController;
 
-  Widget? _lastPushedWidget;
-
-  DateTime? _lastPushedDateTime;
-
   @override
   void initState() {
     super.initState();
@@ -115,12 +111,7 @@ class _DateTimeLoopBuilderState extends State<DateTimeLoopBuilder> {
       stream: _controller.dateTimeStream,
       builder: (context, datetimeSnapshot) {
         final DateTime dateTime = datetimeSnapshot.data!;
-        if (_lastPushedWidget == null || dateTime != _lastPushedDateTime) {
-          _lastPushedDateTime = dateTime;
-          _lastPushedWidget =
-              widget.builder(context, _lastPushedDateTime!, widget.child);
-        }
-        return _lastPushedWidget!;
+        return widget.builder(context, dateTime, widget.child);
       },
     );
   }
