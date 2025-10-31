@@ -88,7 +88,7 @@ class _MyAppState extends State<MyApp> {
                           height: 200,
                           color: Color((math.Random().nextDouble() * 0xFFFFFF)
                                   .toInt())
-                              .withOpacity(1.0),
+                              .withValues(alpha: 1.0),
                           child: const Center(
                             child: Text(
                                 'Widget restate based on DateTimeLoopController'),
@@ -121,12 +121,12 @@ class ExampleComponent extends StatelessWidget {
         return Column(
           children: [
             Container(
-              width: 200,
-              height: 200,
-              color: Color((math.Random().nextDouble() * 0xFFFFFF).toInt())
-                  .withOpacity(1.0),
-            ),
-            Text('${dateTime.hour}:${dateTime.minute}:${dateTime.second}'),
+                width: 200,
+                height: 200,
+                color: Color((math.Random().nextDouble() * 0xFFFFFF).toInt())
+                    .withValues(alpha: 1.0)),
+            Text(
+                '${dateTime.hour}:${dateTime.minute}:${dateTime.second}:${dateTime.millisecond}'),
             child!
           ],
         );
@@ -135,7 +135,7 @@ class ExampleComponent extends StatelessWidget {
         width: 200,
         height: 200,
         color: Color((math.Random().nextDouble() * 0xFFFFFF).toInt())
-            .withOpacity(1.0),
+            .withValues(alpha: 1.0),
         child: const Center(
           child: Text(
               'Widget will not be affected by the change of the DateTimeLoopBuilder state. (Color will changed only if the state of ExampleComponent is changed)'),
