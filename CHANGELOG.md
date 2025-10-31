@@ -6,7 +6,8 @@
 
 - Removed internal caching logic (`_lastPushedWidget` and `_lastPushedDateTime`) in `DateTimeLoopBuilder` that was preventing builder from being called when stream emitted the same datetime value.
 - Fixed `triggerOnStateChange` behavior to properly trigger rebuilds on every stream emission.
-- Update `example/main.dart` file.
+- Updated `README.md` file.
+- Updated `example/main.dart` file.
 
 ## [1.5.0] - (2025-10-24)
 - Added `pause()` and `resume()` methods to `DateTimeLoopController` for pausing and resuming datetime updates, 
