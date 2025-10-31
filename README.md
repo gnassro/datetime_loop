@@ -75,6 +75,34 @@ DateTimeLoopBuilder(
 controller.dispose();
 ```
 
+### Testing with `getNow`
+
+Both `DateTimeLoopBuilder` and `DateTimeLoopController` support a `getNow` parameter that allows you to mock the system time. This is particularly useful for testing and simulating different time scenarios:
+
+```dart
+// Example: Testing with a mocked time
+DateTime customTime = DateTime(2025, 10, 31, 12, 0, 0);
+
+DateTimeLoopBuilder(
+  timeUnit: TimeUnit.seconds,
+  getNow: () => customTime,
+  builder: (context, dateTime, child) {
+    return Text('Mocked time: $dateTime');
+  },
+)
+
+// Example: Using getNow with DateTimeLoopController
+final controller = DateTimeLoopController(
+  timeUnit: TimeUnit.minutes,
+  getNow: () => customTime,
+);
+```
+
+This feature enables:
+- **Unit Testing**: Write deterministic tests by controlling the datetime value
+- **Time Simulation**: Simulate different time scenarios without waiting for real time to pass
+- **Debugging**: Test edge cases and time-dependent behavior
+
 You can check more examples of using this widget [here](https://github.com/gnassro/datetime_loop/tree/master/example/lib)
 
 ## Issues and Feedback

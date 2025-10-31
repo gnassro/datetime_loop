@@ -1,3 +1,14 @@
+## [1.6.0] - (2025-10-31)
+- Added `getNow` parameter to `DateTimeLoopBuilder` and `DateTimeLoopController` for testing and mocking system time.
+- **Introduced unit testing** to the package:
+  - `test/date_time_loop_controller_test.dart`: Tests controller stream emissions for all `TimeUnit` values (milliseconds, seconds, minutes, hours, days) with both `triggerOnStart` true and false.
+  - `test/date_time_loop_builder_test.dart`: Tests widget rebuild behavior with different `TimeUnit` and `triggerOnStateChange` configurations.
+
+- Removed internal caching logic (`_lastPushedWidget` and `_lastPushedDateTime`) in `DateTimeLoopBuilder` that was preventing builder from being called when stream emitted the same datetime value.
+- Fixed `triggerOnStateChange` behavior to properly trigger rebuilds on every stream emission.
+- Updated `README.md` file.
+- Updated `example/main.dart` file.
+
 ## [1.5.0] - (2025-10-24)
 - Added `pause()` and `resume()` methods to `DateTimeLoopController` for pausing and resuming datetime updates, 
   useful for resource management (e.g., when the app is backgrounded).
