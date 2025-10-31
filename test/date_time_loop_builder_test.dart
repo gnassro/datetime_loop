@@ -41,7 +41,6 @@ Future<void> _testBuilderRebuilds({
   required bool triggerOnStateChange,
   required WidgetTester tester,
 }) async {
-
   final initialTime = DateTime(2025, 10, 25, 12, 34, 56, 789);
 
   DateTime now = initialTime;
@@ -98,7 +97,8 @@ Future<void> _testBuilderRebuilds({
 }
 
 void main() {
-  testWidgets('rebuilds every millisecond with triggerOnStateChange true', (tester) async {
+  testWidgets('rebuilds every millisecond with triggerOnStateChange true',
+      (tester) async {
     await _testBuilderRebuilds(
       unit: TimeUnit.milliseconds,
       triggerOnStateChange: true,
@@ -106,7 +106,8 @@ void main() {
     );
   });
 
-  testWidgets('rebuilds every millisecond with triggerOnStateChange false', (tester) async {
+  testWidgets('rebuilds every millisecond with triggerOnStateChange false',
+      (tester) async {
     await _testBuilderRebuilds(
       unit: TimeUnit.milliseconds,
       triggerOnStateChange: false,
@@ -114,7 +115,8 @@ void main() {
     );
   });
 
-  testWidgets('rebuilds every second with triggerOnStateChange true', (tester) async {
+  testWidgets('rebuilds every second with triggerOnStateChange true',
+      (tester) async {
     await _testBuilderRebuilds(
       unit: TimeUnit.seconds,
       triggerOnStateChange: true,
@@ -122,7 +124,8 @@ void main() {
     );
   });
 
-  testWidgets('rebuilds every second with triggerOnStateChange false', (tester) async {
+  testWidgets('rebuilds every second with triggerOnStateChange false',
+      (tester) async {
     await _testBuilderRebuilds(
       unit: TimeUnit.seconds,
       triggerOnStateChange: false,
@@ -130,7 +133,8 @@ void main() {
     );
   });
 
-  testWidgets('rebuilds every minute with triggerOnStateChange true', (tester) async {
+  testWidgets('rebuilds every minute with triggerOnStateChange true',
+      (tester) async {
     await _testBuilderRebuilds(
       unit: TimeUnit.minutes,
       triggerOnStateChange: true,
@@ -138,7 +142,8 @@ void main() {
     );
   });
 
-  testWidgets('rebuilds every minute with triggerOnStateChange false', (tester) async {
+  testWidgets('rebuilds every minute with triggerOnStateChange false',
+      (tester) async {
     await _testBuilderRebuilds(
       unit: TimeUnit.minutes,
       triggerOnStateChange: false,
@@ -146,7 +151,8 @@ void main() {
     );
   });
 
-  testWidgets('rebuilds every hour with triggerOnStateChange true', (tester) async {
+  testWidgets('rebuilds every hour with triggerOnStateChange true',
+      (tester) async {
     await _testBuilderRebuilds(
       unit: TimeUnit.hours,
       triggerOnStateChange: true,
@@ -154,7 +160,8 @@ void main() {
     );
   });
 
-  testWidgets('rebuilds every hour with triggerOnStateChange false', (tester) async {
+  testWidgets('rebuilds every hour with triggerOnStateChange false',
+      (tester) async {
     await _testBuilderRebuilds(
       unit: TimeUnit.hours,
       triggerOnStateChange: false,
@@ -162,7 +169,8 @@ void main() {
     );
   });
 
-  testWidgets('rebuilds every day with triggerOnStateChange true', (tester) async {
+  testWidgets('rebuilds every day with triggerOnStateChange true',
+      (tester) async {
     await _testBuilderRebuilds(
       unit: TimeUnit.days,
       triggerOnStateChange: true,
@@ -170,7 +178,8 @@ void main() {
     );
   });
 
-  testWidgets('rebuilds every day with triggerOnStateChange false', (tester) async {
+  testWidgets('rebuilds every day with triggerOnStateChange false',
+      (tester) async {
     await _testBuilderRebuilds(
       unit: TimeUnit.days,
       triggerOnStateChange: false,

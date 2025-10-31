@@ -41,8 +41,7 @@ void _testTimeUnitEmissions({
   required bool triggerOnStart,
   required FakeAsync async,
 }) {
-  final initialTime =
-      DateTime(2025, 10, 25, 12, 34, 56, 789);
+  final initialTime = DateTime(2025, 10, 25, 12, 34, 56, 789);
 
   DateTime getMockedNow() => initialTime.add(async.elapsed);
 
