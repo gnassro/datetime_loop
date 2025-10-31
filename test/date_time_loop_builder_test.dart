@@ -106,9 +106,73 @@ void main() {
     );
   });
 
+  testWidgets('rebuilds every millisecond with triggerOnStateChange false', (tester) async {
+    await _testBuilderRebuilds(
+      unit: TimeUnit.milliseconds,
+      triggerOnStateChange: false,
+      tester: tester,
+    );
+  });
+
+  testWidgets('rebuilds every second with triggerOnStateChange true', (tester) async {
+    await _testBuilderRebuilds(
+      unit: TimeUnit.seconds,
+      triggerOnStateChange: true,
+      tester: tester,
+    );
+  });
+
   testWidgets('rebuilds every second with triggerOnStateChange false', (tester) async {
     await _testBuilderRebuilds(
       unit: TimeUnit.seconds,
+      triggerOnStateChange: false,
+      tester: tester,
+    );
+  });
+
+  testWidgets('rebuilds every minute with triggerOnStateChange true', (tester) async {
+    await _testBuilderRebuilds(
+      unit: TimeUnit.minutes,
+      triggerOnStateChange: true,
+      tester: tester,
+    );
+  });
+
+  testWidgets('rebuilds every minute with triggerOnStateChange false', (tester) async {
+    await _testBuilderRebuilds(
+      unit: TimeUnit.minutes,
+      triggerOnStateChange: false,
+      tester: tester,
+    );
+  });
+
+  testWidgets('rebuilds every hour with triggerOnStateChange true', (tester) async {
+    await _testBuilderRebuilds(
+      unit: TimeUnit.hours,
+      triggerOnStateChange: true,
+      tester: tester,
+    );
+  });
+
+  testWidgets('rebuilds every hour with triggerOnStateChange false', (tester) async {
+    await _testBuilderRebuilds(
+      unit: TimeUnit.hours,
+      triggerOnStateChange: false,
+      tester: tester,
+    );
+  });
+
+  testWidgets('rebuilds every day with triggerOnStateChange true', (tester) async {
+    await _testBuilderRebuilds(
+      unit: TimeUnit.days,
+      triggerOnStateChange: true,
+      tester: tester,
+    );
+  });
+
+  testWidgets('rebuilds every day with triggerOnStateChange false', (tester) async {
+    await _testBuilderRebuilds(
+      unit: TimeUnit.days,
       triggerOnStateChange: false,
       tester: tester,
     );
